@@ -142,6 +142,7 @@ final class TelemetryViewModel: NSObject, ObservableObject, ARSessionDelegate {
         DispatchQueue.main.async { [weak self] in
             guard let self else { return }
             self.isConnecting = false
+            self.connectionStatusMessage = "연결 성공. 센서 수집 준비 중..."
             self.statusMessage = "연결 성공. 센서 수집 준비 중..."
             self.startCollectionFlow(reason: "startup", shouldSend: true)
         }
@@ -204,6 +205,11 @@ final class TelemetryViewModel: NSObject, ObservableObject, ARSessionDelegate {
         assert(Thread.isMainThread)
 
         guard configureSession(reason: reason) else { return }
+        if !shouldSend {
+            connectionStatusMessage = "디버그 모드: 연결 없음"
+        } else {
+            connectionStatusMessage = "연결 유지 중"
+        }
 
         startMotionUpdatesIfNeeded()
         if shouldSend {
@@ -216,7 +222,6 @@ final class TelemetryViewModel: NSObject, ObservableObject, ARSessionDelegate {
         statusMessage = shouldSend
             ? "센서 수집 및 전송 중 (\(Int(config.sendFrequency))Hz)"
             : "디버그 모드 - 센서만 수집 중"
-        connectionStatusMessage = shouldSend ? "연결 유지 중" : "디버그 모드: 연결 없음"
     }
 
     private func stopCollection(message: String? = nil) {
@@ -292,6 +297,7 @@ final class TelemetryViewModel: NSObject, ObservableObject, ARSessionDelegate {
                 dto.status.trackingConfidence = 0.0
             }
             statusMessage = "이 기기는 ARKit 월드 트래킹을 지원하지 않습니다."
+            connectionStatusMessage = "연결은 유지되지만 ARKit을 사용할 수 없습니다."
             return false
         }
 
