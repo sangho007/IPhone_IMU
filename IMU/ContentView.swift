@@ -123,7 +123,7 @@ struct ContentView: View {
             .background(Color(.systemGroupedBackground))
             .navigationTitle("DTO Preview")
             .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
+                ToolbarItemGroup(placement: .navigationBarLeading) {
                     Button {
                         guard !isRunningInPreviews else { return }
                         viewModel.toggleDebugMode()
@@ -135,6 +135,18 @@ struct ContentView: View {
                         }
                     }
                     .tint(viewModel.isDebugMode ? .orange : .primary)
+
+                    Button {
+                        guard !isRunningInPreviews else { return }
+                        viewModel.toggleDummyData()
+                    } label: {
+                        if viewModel.isDummyDataForced {
+                            Label("더미 데이터", systemImage: "shippingbox.fill")
+                        } else {
+                            Label("더미 데이터", systemImage: "shippingbox")
+                        }
+                    }
+                    .tint(viewModel.isDummyDataForced ? .pink : .primary)
                 }
                 ToolbarItem(placement: .primaryAction) {
                     if viewModel.isCollecting {

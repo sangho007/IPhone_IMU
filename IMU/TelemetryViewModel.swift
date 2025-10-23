@@ -19,6 +19,7 @@ final class TelemetryViewModel: NSObject, ObservableObject, ARSessionDelegate {
     @Published private(set) var isCollecting: Bool = false
     @Published private(set) var isConnecting: Bool = false
     @Published private(set) var isDebugMode: Bool = false
+    @Published private(set) var isDummyDataForced: Bool = false
 
     private let session = ARSession()
     private let motionManager = CMMotionManager()
@@ -31,6 +32,7 @@ final class TelemetryViewModel: NSObject, ObservableObject, ARSessionDelegate {
     private var originID: Int = 0
     private var currentNonce: String = TelemetryViewModel.makeNonce()
     private var worldVelocity: SIMD3<Float> = .zero
+    private var isDummyFallback: Bool = false
 
     private var connection: NWConnection?
     private var connectionAttempts: Int = 0
@@ -72,7 +74,7 @@ final class TelemetryViewModel: NSObject, ObservableObject, ARSessionDelegate {
     }
 
     /// 모든 센서 업데이트 및 연결을 중지
-    func stop(message: String? = "센서 수집이 중지되었습니다.") {
+    func stop(message: String? = "센서 수집이 중지되었습니다.", connectionMessage: String? = "연결이 종료되었습니다.") {
         stopCollection(message: message)
         isConnecting = false
         networkQueue.async { [weak self] in
@@ -81,15 +83,19 @@ final class TelemetryViewModel: NSObject, ObservableObject, ARSessionDelegate {
             self.tearDownConnection()
         }
 
-        connectionStatusMessage = "연결이 종료되었습니다."
+        if let connectionMessage {
+            DispatchQueue.main.async { [weak self] in
+                self?.connectionStatusMessage = connectionMessage
+            }
+        }
     }
 
     /// 세션 파라미터와 누적 상태를 초기화
     func reset() {
-        guard isCollecting else { return }
-        let shouldSend = !isDebugMode
-        startCollectionFlow(reason: "manual", shouldSend: shouldSend)
-        statusMessage = "세션이 리셋되었습니다."
+        stop(
+            message: "세션이 리셋되었습니다. 다시 시작 버튼을 눌러 재연결하세요.",
+            connectionMessage: "재연결 대기 중"
+        )
     }
 
     // MARK: - 연결 관리
@@ -205,13 +211,11 @@ final class TelemetryViewModel: NSObject, ObservableObject, ARSessionDelegate {
         assert(Thread.isMainThread)
 
         guard configureSession(reason: reason) else { return }
-        if !shouldSend {
-            connectionStatusMessage = "디버그 모드: 연결 없음"
-        } else {
-            connectionStatusMessage = "연결 유지 중"
+
+        if !isDummyFallback {
+            startMotionUpdatesIfNeeded()
         }
 
-        startMotionUpdatesIfNeeded()
         if shouldSend {
             startSendLoop()
         } else {
@@ -219,9 +223,18 @@ final class TelemetryViewModel: NSObject, ObservableObject, ARSessionDelegate {
         }
 
         isCollecting = true
-        statusMessage = shouldSend
-            ? "센서 수집 및 전송 중 (\(Int(config.sendFrequency))Hz)"
-            : "디버그 모드 - 센서만 수집 중"
+        if shouldSend {
+            if isDummyFallback {
+                statusMessage = "시뮬레이터 더미 데이터 전송 중 (\(Int(config.sendFrequency))Hz)"
+                connectionStatusMessage = "연결 유지 중 (더미 데이터)"
+            } else {
+                statusMessage = "센서 수집 및 전송 중 (\(Int(config.sendFrequency))Hz)"
+                connectionStatusMessage = "연결 유지 중"
+            }
+        } else {
+            statusMessage = "디버그 모드 - 센서만 수집 중"
+            connectionStatusMessage = "디버그 모드: 연결 없음"
+        }
     }
 
     private func stopCollection(message: String? = nil) {
@@ -259,6 +272,7 @@ final class TelemetryViewModel: NSObject, ObservableObject, ARSessionDelegate {
         let collecting = DispatchQueue.main.sync { self.isCollecting }
         guard collecting else { return }
 
+        updateHeaderTiming()
         let dto = DispatchQueue.main.sync { self.telemetry }
         let payload = TelemetryProtobufEncoder.encode(dto)
 
@@ -290,15 +304,43 @@ final class TelemetryViewModel: NSObject, ObservableObject, ARSessionDelegate {
     /// ARWorldTracking을 재시작하고 DTO의 기본값 갱신
     @discardableResult
     private func configureSession(reason: String) -> Bool {
-        guard ARWorldTrackingConfiguration.isSupported else {
+        let shouldUseDummy = isDummyDataForced || !ARWorldTrackingConfiguration.isSupported
+
+        if shouldUseDummy {
+            isDummyFallback = true
+            sequence = 0
+            lastFrameTimestamp = nil
+            lastWorldPosition = nil
+            lastHeaderUpdate = nil
+            originID += 1
+            currentNonce = TelemetryViewModel.makeNonce()
+
             updateTelemetry { dto in
-                dto.status.tracking = "LOST"
-                dto.status.statusReason = "unsupported"
-                dto.status.trackingConfidence = 0.0
+                dto = TelemetryDTO.sample
+                dto.header.sessionID = TelemetryViewModel.makeSessionID()
+                dto.header.seq = 0
+                dto.status.tracking = "OK"
+                dto.status.statusReason = self.isDummyDataForced ? "forced_dummy" : "simulator_dummy"
+                dto.status.trackingConfidence = 1.0
+                dto.poseWorldPhone.valid = true
+                dto.velocity.valid = true
+                dto.acceleration.valid = true
+                dto.gyro.valid = true
+                dto.originReset.originID = self.originID
+                dto.originReset.nonce = self.currentNonce
+                dto.originReset.applyAtStampNS = 0
+                dto.originReset.reason = reason
             }
-            statusMessage = "이 기기는 ARKit 월드 트래킹을 지원하지 않습니다."
-            connectionStatusMessage = "연결은 유지되지만 ARKit을 사용할 수 없습니다."
-            return false
+
+            statusMessage = self.isDummyDataForced
+                ? "더미 데이터 강제 사용 준비 완료"
+                : "시뮬레이터 더미 데이터 전송 준비 완료"
+            connectionStatusMessage = self.isDummyDataForced
+                ? "연결은 유지되지만 더미 데이터를 전송합니다."
+                : "연결은 유지되지만 ARKit 대신 더미 데이터를 전송합니다."
+            return true
+        } else {
+            isDummyFallback = false
         }
 
         let configuration = ARWorldTrackingConfiguration()
@@ -473,7 +515,7 @@ final class TelemetryViewModel: NSObject, ObservableObject, ARSessionDelegate {
     /// 디버그 모드를 토글 (통신 없이 센서만 수집)
     func toggleDebugMode() {
         let targetState = !isDebugMode
-        stop(message: nil)
+        stop(message: nil, connectionMessage: nil)
         isDebugMode = targetState
         statusMessage = targetState
             ? "디버그 모드 활성화: 통신 없이 센서만 수집합니다."
@@ -481,6 +523,31 @@ final class TelemetryViewModel: NSObject, ObservableObject, ARSessionDelegate {
         connectionStatusMessage = targetState
             ? "디버그 모드: 연결 시도 안 함"
             : "디버그 모드 비활성화됨"
+    }
+
+    /// 실 데이터 대신 더미 데이터를 강제로 사용하도록 토글
+    func toggleDummyData() {
+        let newState = !isDummyDataForced
+        isDummyDataForced = newState
+        let message = newState
+            ? "더미 데이터 강제 사용: 센서 대신 샘플 데이터를 전송합니다."
+            : "더미 데이터 강제 사용 해제"
+        statusMessage = message
+        connectionStatusMessage = newState
+            ? "더미 데이터 강제 사용 대기 중"
+            : "실 센서 사용 대기 중"
+
+        if isCollecting {
+            stop(message: message, connectionMessage: nil)
+            DispatchQueue.main.async { [weak self] in
+                guard let self else { return }
+                if self.isDebugMode {
+                    self.start()
+                } else {
+                    self.start()
+                }
+            }
+        }
     }
 }
 
