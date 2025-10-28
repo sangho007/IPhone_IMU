@@ -16,6 +16,7 @@ final class TelemetryViewModel: NSObject, ObservableObject, ARSessionDelegate {
     @Published var telemetry: TelemetryDTO
     @Published var statusMessage: String?
     @Published var connectionStatusMessage: String?
+    @Published var connectionHostInput: String = ConnectionConfig.default.defaultHost
     @Published private(set) var isCollecting: Bool = false
     @Published private(set) var isConnecting: Bool = false
     @Published private(set) var isDebugMode: Bool = false
@@ -64,8 +65,16 @@ final class TelemetryViewModel: NSObject, ObservableObject, ARSessionDelegate {
 
         guard !isCollecting else { return }
         guard !isConnecting else { return }
+
+        let targetHost = connectionHostInput.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !targetHost.isEmpty else {
+            statusMessage = "연결할 호스트 주소를 입력하세요."
+            connectionStatusMessage = "연결할 호스트를 입력하세요."
+            return
+        }
+
         isConnecting = true
-        connectionStatusMessage = "수신자와 연결 중..."
+        connectionStatusMessage = "\(targetHost) 수신자와 연결 중..."
         networkQueue.async { [weak self] in
             guard let self else { return }
             self.connectionAttempts = 0
@@ -109,11 +118,19 @@ final class TelemetryViewModel: NSObject, ObservableObject, ARSessionDelegate {
             return
         }
 
+        guard let endpoint = makeEndpointHost() else {
+            DispatchQueue.main.async { [weak self] in
+                self?.isConnecting = false
+                self?.connectionStatusMessage = "연결할 호스트를 입력하세요."
+            }
+            return
+        }
+
         connectionAttempts += 1
 
         tearDownConnection()
 
-        let connection = NWConnection(host: config.host, port: port, using: .tcp)
+        let connection = NWConnection(host: endpoint.host, port: port, using: .tcp)
         connection.stateUpdateHandler = { [weak self] state in
             self?.handleConnectionState(state)
         }
@@ -124,8 +141,26 @@ final class TelemetryViewModel: NSObject, ObservableObject, ARSessionDelegate {
         DispatchQueue.main.async { [weak self] in
             guard let self else { return }
             let attemptText = "\(attempts)/\(self.config.maxConnectionAttempts)"
-            self.connectionStatusMessage = "수신자와 연결 중... (\(attemptText))"
+            self.connectionStatusMessage = "\(endpoint.displayName) 수신자와 연결 중... (\(attemptText))"
         }
+    }
+
+    private func makeEndpointHost() -> (host: NWEndpoint.Host, displayName: String)? {
+        let hostInput: String
+        if Thread.isMainThread {
+            hostInput = connectionHostInput
+        } else {
+            hostInput = DispatchQueue.main.sync { self.connectionHostInput }
+        }
+
+        let trimmed = hostInput.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !trimmed.isEmpty else { return nil }
+
+        if trimmed.compare("localhost", options: .caseInsensitive) == .orderedSame {
+            return (NWEndpoint.Host("127.0.0.1"), "localhost")
+        }
+
+        return (NWEndpoint.Host(trimmed), trimmed)
     }
 
     private func handleConnectionState(_ state: NWConnection.State) {
@@ -584,14 +619,14 @@ private extension TelemetryViewModel {
 
 private extension TelemetryViewModel {
     struct ConnectionConfig {
-        let host: NWEndpoint.Host
+        let defaultHost: String
         let port: NWEndpoint.Port?
         let maxConnectionAttempts: Int
         let retryDelay: TimeInterval
         let sendFrequency: Double
 
         static let `default` = ConnectionConfig(
-            host: "127.0.0.1",
+            defaultHost: "127.0.0.1",
             port: NWEndpoint.Port(rawValue: 4820),
             maxConnectionAttempts: 5,
             retryDelay: 1.5,

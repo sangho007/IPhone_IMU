@@ -35,6 +35,17 @@ struct ContentView: View {
                         keyValue("schema_version", dto.schemaVersion)
                     }
 
+                    section(title: "Connection Settings") {
+                        TextField("mDNS 혹은 IP 주소", text: $viewModel.connectionHostInput)
+                            .textInputAutocapitalization(.never)
+                            .keyboardType(.URL)
+                            .disableAutocorrection(true)
+                            .disabled(viewModel.isCollecting || viewModel.isConnecting)
+                        Text("예: imu.local, 192.168.0.42, localhost")
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                    }
+
                     if let connectionMessage = viewModel.connectionStatusMessage {
                         section(title: "Connection Status") {
                             Text(connectionMessage)
