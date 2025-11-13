@@ -14,13 +14,25 @@ import simd
 /// ARKit, CoreMotion, TCP 전송을 묶어 DTO를 실시간 구성·전송하는 뷰모델
 final class TelemetryViewModel: NSObject, ObservableObject, ARSessionDelegate {
     @Published var telemetry: TelemetryDTO
-    @Published var statusMessage: String?
-    @Published var connectionStatusMessage: String?
+    @Published var statusMessage: String? = nil {
+        didSet { notifyWatchStateChanged() }
+    }
+    @Published var connectionStatusMessage: String? = nil {
+        didSet { notifyWatchStateChanged() }
+    }
     @Published var connectionHostInput: String = ConnectionConfig.default.defaultHost
-    @Published private(set) var isCollecting: Bool = false
-    @Published private(set) var isConnecting: Bool = false
-    @Published private(set) var isDebugMode: Bool = false
-    @Published private(set) var isDummyDataForced: Bool = false
+    @Published private(set) var isCollecting: Bool = false {
+        didSet { notifyWatchStateChanged() }
+    }
+    @Published private(set) var isConnecting: Bool = false {
+        didSet { notifyWatchStateChanged() }
+    }
+    @Published private(set) var isDebugMode: Bool = false {
+        didSet { notifyWatchStateChanged() }
+    }
+    @Published private(set) var isDummyDataForced: Bool = false {
+        didSet { notifyWatchStateChanged() }
+    }
 
     private let session = ARSession()
     private let motionManager = CMMotionManager()
@@ -43,12 +55,15 @@ final class TelemetryViewModel: NSObject, ObservableObject, ARSessionDelegate {
     private var sendTimer: DispatchSourceTimer?
 
     private let config = ConnectionConfig.default
+    private let watchBridge = WatchControlBridge()
 
     override init() {
         telemetry = TelemetryDTO.sample
         super.init()
         motionQueue.name = "com.codex.telemetry.motion"
         session.delegate = self
+        watchBridge.delegate = self
+        notifyWatchStateChanged()
     }
 
     deinit {
@@ -547,6 +562,112 @@ final class TelemetryViewModel: NSObject, ObservableObject, ARSessionDelegate {
         }
     }
 
+    // MARK: - 워치 동기화
+
+    private func notifyWatchStateChanged() {
+        let pushBlock = { [weak self] in
+            guard let self else { return }
+            let state = self.currentWatchState()
+            self.watchBridge.pushState(state)
+        }
+
+        if Thread.isMainThread {
+            pushBlock()
+        } else {
+            DispatchQueue.main.async(execute: pushBlock)
+        }
+    }
+
+    private func currentWatchState() -> WatchAppState {
+        WatchAppState(
+            statusMessage: statusMessage,
+            connectionMessage: connectionStatusMessage,
+            buttonAppearances: makeButtonAppearances()
+        )
+    }
+
+    private func makeButtonAppearances() -> [WatchButtonAppearance] {
+        [
+            makePrimaryButtonAppearance(),
+            makeDebugButtonAppearance(),
+            makeDummyButtonAppearance()
+        ]
+    }
+
+    private func makePrimaryButtonAppearance() -> WatchButtonAppearance {
+        if isCollecting {
+            return WatchButtonAppearance(
+                identifier: "primary",
+                title: "세션 리셋",
+                systemImage: "arrow.counterclockwise",
+                tintToken: .primary,
+                command: .resetSession,
+                isEnabled: true,
+                isHighlighted: true
+            )
+        }
+
+        if isDebugMode {
+            return WatchButtonAppearance(
+                identifier: "primary",
+                title: "센서 수집",
+                systemImage: "play.fill",
+                tintToken: .primary,
+                command: .startCollection,
+                isEnabled: true,
+                isHighlighted: false
+            )
+        }
+
+        if isConnecting {
+            return WatchButtonAppearance(
+                identifier: "primary",
+                title: "연결 중...",
+                systemImage: "arrow.triangle.2.circlepath",
+                tintToken: .secondary,
+                command: .startCollection,
+                isEnabled: false,
+                isHighlighted: true
+            )
+        }
+
+        return WatchButtonAppearance(
+            identifier: "primary",
+            title: "수집 시작",
+            systemImage: "play.fill",
+            tintToken: .primary,
+            command: .startCollection,
+            isEnabled: true,
+            isHighlighted: false
+        )
+    }
+
+    private func makeDebugButtonAppearance() -> WatchButtonAppearance {
+        let active = isDebugMode
+        return WatchButtonAppearance(
+            identifier: "debug",
+            title: "디버그 모드",
+            systemImage: active ? "ladybug.fill" : "ladybug",
+            tintToken: active ? .orange : .primary,
+            command: .toggleDebug,
+            isEnabled: true,
+            isHighlighted: active
+        )
+    }
+
+    private func makeDummyButtonAppearance() -> WatchButtonAppearance {
+        let active = isDummyDataForced
+        return WatchButtonAppearance(
+            identifier: "dummy",
+            title: "더미 데이터",
+            systemImage: active ? "shippingbox.fill" : "shippingbox",
+            tintToken: active ? .pink : .primary,
+            command: .toggleDummy,
+            isEnabled: true,
+            isHighlighted: active
+        )
+    }
+
     /// 디버그 모드를 토글 (통신 없이 센서만 수집)
     func toggleDebugMode() {
         let targetState = !isDebugMode
@@ -582,6 +703,34 @@ final class TelemetryViewModel: NSObject, ObservableObject, ARSessionDelegate {
                     self.start()
                 }
             }
+        }
+    }
+}
+
+// MARK: - WatchControlBridgeDelegate
+
+extension TelemetryViewModel: WatchControlBridgeDelegate {
+    func watchControlBridge(_ bridge: WatchControlBridge, didReceive command: WatchCommand) {
+        switch command {
+        case .startCollection:
+            start()
+        case .resetSession:
+            reset()
+        case .toggleDebug:
+            toggleDebugMode()
+        case .toggleDummy:
+            toggleDummyData()
+        case .requestState:
+            // 이미 브리지에서 별도로 처리한다.
+            break
+        }
+    }
+
+    func watchControlBridgeCurrentState(_ bridge: WatchControlBridge) -> WatchAppState {
+        if Thread.isMainThread {
+            return currentWatchState()
+        } else {
+            return DispatchQueue.main.sync { self.currentWatchState() }
         }
     }
 }
@@ -626,7 +775,7 @@ private extension TelemetryViewModel {
         let sendFrequency: Double
 
         static let `default` = ConnectionConfig(
-            defaultHost: "127.0.0.1",
+            defaultHost: "192.168.105.199",
             port: NWEndpoint.Port(rawValue: 4820),
             maxConnectionAttempts: 5,
             retryDelay: 1.5,

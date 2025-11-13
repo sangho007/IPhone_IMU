@@ -7,7 +7,45 @@
 		<key>IMU.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
+			<integer>1</integer>
+		</dict>
+		<key>IMU_Remote Watch App.xcscheme_^#shared#^_</key>
+		<dict>
+			<key>orderHint</key>
 			<integer>0</integer>
+		</dict>
+	</dict>
+	<key>SuppressBuildableAutocreation</key>
+	<dict>
+		<key>4918ED492EC33C22009710A1</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>4918ED552EC33C24009710A1</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>4918ED5F2EC33C24009710A1</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>499FEE262EA924D3005724AA</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>499FEE332EA924D5005724AA</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>499FEE3D2EA924D5005724AA</key>
+		<dict>
+			<key>primary</key>
+			<true/>
 		</dict>
 	</dict>
 </dict>

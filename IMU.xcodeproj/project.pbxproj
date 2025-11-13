@@ -6,7 +6,32 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		4918ED6A2EC33C24009710A1 /* IMU_Remote Watch App.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 4918ED4A2EC33C22009710A1 /* IMU_Remote Watch App.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
+		4918ED572EC33C24009710A1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 499FEE1F2EA924D3005724AA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 4918ED492EC33C22009710A1;
+			remoteInfo = "IMU_Remote Watch App";
+		};
+		4918ED612EC33C24009710A1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 499FEE1F2EA924D3005724AA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 4918ED492EC33C22009710A1;
+			remoteInfo = "IMU_Remote Watch App";
+		};
+		4918ED682EC33C24009710A1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 499FEE1F2EA924D3005724AA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 4918ED492EC33C22009710A1;
+			remoteInfo = "IMU_Remote Watch App";
+		};
 		499FEE352EA924D5005724AA /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 499FEE1F2EA924D3005724AA /* Project object */;
@@ -23,13 +48,45 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		4918ED6B2EC33C24009710A1 /* Embed Watch Content */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "$(CONTENTS_FOLDER_PATH)/Watch";
+			dstSubfolderSpec = 16;
+			files = (
+				4918ED6A2EC33C24009710A1 /* IMU_Remote Watch App.app in Embed Watch Content */,
+			);
+			name = "Embed Watch Content";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
+		4918ED4A2EC33C22009710A1 /* IMU_Remote Watch App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "IMU_Remote Watch App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		4918ED562EC33C24009710A1 /* IMU_Remote Watch AppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "IMU_Remote Watch AppTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		4918ED602EC33C24009710A1 /* IMU_Remote Watch AppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "IMU_Remote Watch AppUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		499FEE272EA924D4005724AA /* IMU.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = IMU.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		499FEE342EA924D5005724AA /* IMUTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = IMUTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		499FEE3E2EA924D5005724AA /* IMUUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = IMUUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
+		4918ED4B2EC33C22009710A1 /* IMU_Remote Watch App */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = "IMU_Remote Watch App";
+			sourceTree = "<group>";
+		};
+		4918ED592EC33C24009710A1 /* IMU_Remote Watch AppTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = "IMU_Remote Watch AppTests";
+			sourceTree = "<group>";
+		};
+		4918ED632EC33C24009710A1 /* IMU_Remote Watch AppUITests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = "IMU_Remote Watch AppUITests";
+			sourceTree = "<group>";
+		};
 		499FEE292EA924D4005724AA /* IMU */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = IMU;
@@ -48,6 +105,27 @@
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		4918ED472EC33C22009710A1 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		4918ED532EC33C24009710A1 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		4918ED5D2EC33C24009710A1 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		499FEE242EA924D3005724AA /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -78,6 +156,9 @@
 				499FEE292EA924D4005724AA /* IMU */,
 				499FEE372EA924D5005724AA /* IMUTests */,
 				499FEE412EA924D5005724AA /* IMUUITests */,
+				4918ED4B2EC33C22009710A1 /* IMU_Remote Watch App */,
+				4918ED592EC33C24009710A1 /* IMU_Remote Watch AppTests */,
+				4918ED632EC33C24009710A1 /* IMU_Remote Watch AppUITests */,
 				499FEE282EA924D4005724AA /* Products */,
 			);
 			sourceTree = "<group>";
@@ -88,6 +169,9 @@
 				499FEE272EA924D4005724AA /* IMU.app */,
 				499FEE342EA924D5005724AA /* IMUTests.xctest */,
 				499FEE3E2EA924D5005724AA /* IMUUITests.xctest */,
+				4918ED4A2EC33C22009710A1 /* IMU_Remote Watch App.app */,
+				4918ED562EC33C24009710A1 /* IMU_Remote Watch AppTests.xctest */,
+				4918ED602EC33C24009710A1 /* IMU_Remote Watch AppUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -95,6 +179,74 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		4918ED492EC33C22009710A1 /* IMU_Remote Watch App */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 4918ED722EC33C24009710A1 /* Build configuration list for PBXNativeTarget "IMU_Remote Watch App" */;
+			buildPhases = (
+				4918ED462EC33C22009710A1 /* Sources */,
+				4918ED472EC33C22009710A1 /* Frameworks */,
+				4918ED482EC33C22009710A1 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				4918ED4B2EC33C22009710A1 /* IMU_Remote Watch App */,
+			);
+			name = "IMU_Remote Watch App";
+			packageProductDependencies = (
+			);
+			productName = "IMU_Remote Watch App";
+			productReference = 4918ED4A2EC33C22009710A1 /* IMU_Remote Watch App.app */;
+			productType = "com.apple.product-type.application";
+		};
+		4918ED552EC33C24009710A1 /* IMU_Remote Watch AppTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 4918ED732EC33C24009710A1 /* Build configuration list for PBXNativeTarget "IMU_Remote Watch AppTests" */;
+			buildPhases = (
+				4918ED522EC33C24009710A1 /* Sources */,
+				4918ED532EC33C24009710A1 /* Frameworks */,
+				4918ED542EC33C24009710A1 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				4918ED582EC33C24009710A1 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				4918ED592EC33C24009710A1 /* IMU_Remote Watch AppTests */,
+			);
+			name = "IMU_Remote Watch AppTests";
+			packageProductDependencies = (
+			);
+			productName = "IMU_Remote Watch AppTests";
+			productReference = 4918ED562EC33C24009710A1 /* IMU_Remote Watch AppTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		4918ED5F2EC33C24009710A1 /* IMU_Remote Watch AppUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 4918ED742EC33C24009710A1 /* Build configuration list for PBXNativeTarget "IMU_Remote Watch AppUITests" */;
+			buildPhases = (
+				4918ED5C2EC33C24009710A1 /* Sources */,
+				4918ED5D2EC33C24009710A1 /* Frameworks */,
+				4918ED5E2EC33C24009710A1 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				4918ED622EC33C24009710A1 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				4918ED632EC33C24009710A1 /* IMU_Remote Watch AppUITests */,
+			);
+			name = "IMU_Remote Watch AppUITests";
+			packageProductDependencies = (
+			);
+			productName = "IMU_Remote Watch AppUITests";
+			productReference = 4918ED602EC33C24009710A1 /* IMU_Remote Watch AppUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
 		499FEE262EA924D3005724AA /* IMU */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 499FEE482EA924D5005724AA /* Build configuration list for PBXNativeTarget "IMU" */;
@@ -102,10 +254,12 @@
 				499FEE232EA924D3005724AA /* Sources */,
 				499FEE242EA924D3005724AA /* Frameworks */,
 				499FEE252EA924D3005724AA /* Resources */,
+				4918ED6B2EC33C24009710A1 /* Embed Watch Content */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				4918ED692EC33C24009710A1 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				499FEE292EA924D4005724AA /* IMU */,
@@ -173,6 +327,17 @@
 				LastSwiftUpdateCheck = 1640;
 				LastUpgradeCheck = 1640;
 				TargetAttributes = {
+					4918ED492EC33C22009710A1 = {
+						CreatedOnToolsVersion = 16.4;
+					};
+					4918ED552EC33C24009710A1 = {
+						CreatedOnToolsVersion = 16.4;
+						TestTargetID = 4918ED492EC33C22009710A1;
+					};
+					4918ED5F2EC33C24009710A1 = {
+						CreatedOnToolsVersion = 16.4;
+						TestTargetID = 4918ED492EC33C22009710A1;
+					};
 					499FEE262EA924D3005724AA = {
 						CreatedOnToolsVersion = 16.4;
 					};
@@ -203,11 +368,35 @@
 				499FEE262EA924D3005724AA /* IMU */,
 				499FEE332EA924D5005724AA /* IMUTests */,
 				499FEE3D2EA924D5005724AA /* IMUUITests */,
+				4918ED492EC33C22009710A1 /* IMU_Remote Watch App */,
+				4918ED552EC33C24009710A1 /* IMU_Remote Watch AppTests */,
+				4918ED5F2EC33C24009710A1 /* IMU_Remote Watch AppUITests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		4918ED482EC33C22009710A1 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		4918ED542EC33C24009710A1 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		4918ED5E2EC33C24009710A1 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		499FEE252EA924D3005724AA /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -232,6 +421,27 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		4918ED462EC33C22009710A1 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		4918ED522EC33C24009710A1 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		4918ED5C2EC33C24009710A1 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		499FEE232EA924D3005724AA /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -256,6 +466,21 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		4918ED582EC33C24009710A1 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 4918ED492EC33C22009710A1 /* IMU_Remote Watch App */;
+			targetProxy = 4918ED572EC33C24009710A1 /* PBXContainerItemProxy */;
+		};
+		4918ED622EC33C24009710A1 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 4918ED492EC33C22009710A1 /* IMU_Remote Watch App */;
+			targetProxy = 4918ED612EC33C24009710A1 /* PBXContainerItemProxy */;
+		};
+		4918ED692EC33C24009710A1 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 4918ED492EC33C22009710A1 /* IMU_Remote Watch App */;
+			targetProxy = 4918ED682EC33C24009710A1 /* PBXContainerItemProxy */;
+		};
 		499FEE362EA924D5005724AA /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 499FEE262EA924D3005724AA /* IMU */;
@@ -269,6 +494,142 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
+		4918ED6C2EC33C24009710A1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = KWSX7KMQU3;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = IMU_Remote;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = sangho.IMU;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = sangho.IMU.watchkitapp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 11.5;
+			};
+			name = Debug;
+		};
+		4918ED6D2EC33C24009710A1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = KWSX7KMQU3;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = IMU_Remote;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = sangho.IMU;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = sangho.IMU.watchkitapp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 11.5;
+			};
+			name = Release;
+		};
+		4918ED6E2EC33C24009710A1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = KWSX7KMQU3;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "sangho.IMU-Remote-Watch-AppTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/IMU_Remote Watch App.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/IMU_Remote Watch App";
+				WATCHOS_DEPLOYMENT_TARGET = 11.5;
+			};
+			name = Debug;
+		};
+		4918ED6F2EC33C24009710A1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = KWSX7KMQU3;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "sangho.IMU-Remote-Watch-AppTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/IMU_Remote Watch App.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/IMU_Remote Watch App";
+				WATCHOS_DEPLOYMENT_TARGET = 11.5;
+			};
+			name = Release;
+		};
+		4918ED702EC33C24009710A1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = KWSX7KMQU3;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "sangho.IMU-Remote-Watch-AppUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				TEST_TARGET_NAME = "IMU_Remote Watch App";
+				WATCHOS_DEPLOYMENT_TARGET = 11.5;
+			};
+			name = Debug;
+		};
+		4918ED712EC33C24009710A1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = KWSX7KMQU3;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "sangho.IMU-Remote-Watch-AppUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				TEST_TARGET_NAME = "IMU_Remote Watch App";
+				WATCHOS_DEPLOYMENT_TARGET = 11.5;
+			};
+			name = Release;
+		};
 		499FEE462EA924D5005724AA /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -525,6 +886,33 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		4918ED722EC33C24009710A1 /* Build configuration list for PBXNativeTarget "IMU_Remote Watch App" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4918ED6C2EC33C24009710A1 /* Debug */,
+				4918ED6D2EC33C24009710A1 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		4918ED732EC33C24009710A1 /* Build configuration list for PBXNativeTarget "IMU_Remote Watch AppTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4918ED6E2EC33C24009710A1 /* Debug */,
+				4918ED6F2EC33C24009710A1 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		4918ED742EC33C24009710A1 /* Build configuration list for PBXNativeTarget "IMU_Remote Watch AppUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4918ED702EC33C24009710A1 /* Debug */,
+				4918ED712EC33C24009710A1 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		499FEE222EA924D3005724AA /* Build configuration list for PBXProject "IMU" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
